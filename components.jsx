@@ -419,7 +419,10 @@ function fmtBy(by) { return by ? (by.includes('@') ? by.split('@')[0] : by) : ''
 // --- Top nav ------------------------------------------------------
 function TopNav({ user, route, onRoute, lang, onLangToggle, alertCount, onLogout, onSearch }) {
   const isMobile = useIsMobile(640);
-  const isCompact = useIsMobile(1024);
+  // Higher than App's own 1024px compact switch (which is what decides TopNav vs
+  // BottomTabBar) so there's an icon-only band above it — otherwise labels wrap
+  // (e.g. iPad landscape ~1024-1150px never had room for 5 full-text pills).
+  const isCompact = useIsMobile(1180);
 
   const items = [
   { k: 'dashboard',  icon: 'home',  label: t('nav_dashboard', lang) },
@@ -622,7 +625,7 @@ function BottomTabBar({ route, onRoute, alertCount, userRole }) {
     { k: 'families',  icon: 'users', label: 'ครอบครัว' },
     { k: 'alerts',    icon: 'bell',  label: 'แจ้งเตือน', badge: alertCount },
     { k: 'analytics', icon: 'chart', label: 'วิเคราะห์' },
-    ...(userRole === 'admin' ? [{ k: 'admin', icon: 'cog', label: 'Admin' }] : []),
+    ...(userRole === 'admin' ? [{ k: 'admin', icon: 'cog', label: 'ผู้ดูแลระบบ' }] : []),
   ];
   return (
     <nav className="pss-bottom-tab">
